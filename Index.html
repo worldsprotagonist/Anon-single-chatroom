@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Chatroom</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #chatbox {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: calc(100% - 22px);
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Welcome to the Anonymous Chatroom</h1>
+        <div id="chatbox"></div>
+        <textarea id="message" placeholder="Type your message..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="saveChat()">Save Chat</button>
+    </main>
+    <script>
+        let chatLog = '';
+
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            if (message.trim() !== '') {
+                chatLog += 'You: ' + message + '\n';
+                document.getElementById('chatbox').innerText = chatLog;
+                document.getElementById('message').value = '';
+                scrollToBottom();
+            }
+        }
+
+        function saveChat() {
+            const blob = new Blob([chatLog], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'chat_log.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function scrollToBottom() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
